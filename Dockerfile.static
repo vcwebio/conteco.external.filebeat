@@ -2,17 +2,9 @@
 FROM docker.elastic.co/beats/filebeat:7.9.2
 ##### END external-mapped/Dockerfile/image-header #####
 
-##### BEGIN image/Dockerfile/build-instructions #####
-USER root
-RUN yum install -y gettext && \
-    yum install -y epel-release && \
-    yum install -y jq && \
-    rm -rf /var/cache/yum/*
-#USER filebeat
-##### END image/Dockerfile/build-instructions #####
-
 ##### BEGIN external/Dockerfile/conteco #####
-COPY ./ /conteco/repo/
+ENV CONTECO_ENTRYPOINT "/conteco/bin/docker-entrypoint"
+COPY ./docker-entrypoint /conteco/bin/docker-entrypoint
 ##### END external/Dockerfile/conteco #####
 
 ##### BEGIN external-mapped/Dockerfile/labels-footer #####

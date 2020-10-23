@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# set CLUSTERNODE if host hostname file is mapped
+CLUSTERNODE=$(< /etc/hostname)
+if [[ -d /hostfs/etc ]] ; then
+  CLUSTERNODE="linuxkit"
+fi
+if [[ -f /hostfs/etc/hostname ]]; then
+  CLUSTERNODE=$(< /hostfs/etc/hostname)
+fi
+if [[ "${CLUSTERNODE}" == "" ]]; then
+  CLUSTERNODE="not-set"
+fi
+/usr/local/bin/docker-entrypoint filebeat -e -strict.perms=false -E name="${CLUSTERNODE}"
